@@ -14,9 +14,3 @@ export const buttonStyles = StyleSheet.create({
     borderColor: '#0A1A2F',
   },
 });
-
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-  },
-});

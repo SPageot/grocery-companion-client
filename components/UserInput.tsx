@@ -10,10 +10,23 @@ const UserInput: React.FC<UserInputProp> = ({
   secureTextEntry,
   autoComplete,
   autoCapitalize,
+  labelColor,
+  borderColor,
+  inputFontColor,
 }) => {
   return (
     <View style={{ gap: 10 }}>
-      <Text style={{ color: '#0A1A2F' }}>{inputName}</Text>
+      {inputName && (
+        <Text
+          style={{
+            color: labelColor || '#0A1A2F',
+            fontSize: 20,
+            fontWeight: 600,
+          }}
+        >
+          {inputName}
+        </Text>
+      )}
       <TextInput
         textContentType={textType}
         secureTextEntry={secureTextEntry}
@@ -23,9 +36,10 @@ const UserInput: React.FC<UserInputProp> = ({
         autoCapitalize={autoCapitalize}
         style={{
           borderWidth: 1,
-          borderColor: '#0A1A2F',
+          borderColor: borderColor || '#0A1A2F',
           width: 300,
           height: 40,
+          color: inputFontColor || 'black',
         }}
       />
     </View>

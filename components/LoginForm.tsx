@@ -5,10 +5,13 @@ import FormContainer from './FormContainer';
 import axios from 'axios';
 import { Toast } from 'toastify-react-native';
 import { BASE_API } from '@/util/baseApi';
+import { useStore } from '@/store/store';
 
 const LoginForm = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const setUser = useStore((state: any) => state.setUser);
+  const setIsLoggedIn = useStore((state: any) => state.setIsLoggedIn);
 
   const handleFetchUser = async () => {
     try {
@@ -18,7 +21,9 @@ const LoginForm = () => {
       });
 
       if (res.data) {
-        Toast.success('Loggin In');
+        setUser(res.data);
+        setIsLoggedIn(true);
+        router.replace('/');
       }
     } catch (err) {
       console.log(err);
