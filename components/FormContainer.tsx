@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
 import { buttonStyles } from '@/styles/button';
 import { router } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const FormContainer = ({
   children,
@@ -21,6 +22,7 @@ const FormContainer = ({
       style={{
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 40,
         gap: 20,
       }}
     >
@@ -37,13 +39,13 @@ const FormContainer = ({
           style={buttonStyles.button}
           onPress={onLeftButtonPress}
         >
-          <Text style={{ color: 'white' }}>{leftButtonText}</Text>
+          <Text style={{ color: '#0A1A2F' }}>{leftButtonText}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={buttonStyles.button}
           onPress={onRightButtonPress}
         >
-          <Text style={{ color: 'white' }}>{rightButtonText}</Text>
+          <Text style={{ color: '#0A1A2F' }}>{rightButtonText}</Text>
         </TouchableOpacity>
       </View>
     </View>

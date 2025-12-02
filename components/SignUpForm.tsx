@@ -1,8 +1,10 @@
-import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 import FormContainer from './FormContainer';
 import { router } from 'expo-router';
 import UserInput from './UserInput';
+import { Toast } from 'toastify-react-native';
+import axios from 'axios';
+import { BASE_API } from '@/util/baseApi';
 
 const SignUpForm = () => {
   const [username, setUsername] = useState('');
@@ -11,17 +13,35 @@ const SignUpForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullName, setFullName] = useState('');
 
+  const handleRegisterUser = async () => {
+    try {
+      const res = await axios.post(`${BASE_API}/users/register`, {
+        username,
+        password,
+        email,
+        phoneNumber,
+        fullName,
+      });
+      if (res.data) {
+        Toast.success('Successfully Registered!');
+        router.push('/login');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <FormContainer
       onLeftButtonPress={() => router.push('/login')}
       leftButtonText="Go to Login"
-      onRightButtonPress={() => console.log('LOGIN LOGIC')}
+      onRightButtonPress={handleRegisterUser}
       rightButtonText="Sign Up"
     >
       <UserInput
         inputName="Full Name"
         value={fullName}
-        onChangeText={(text) => setFullName}
+        onChangeText={(text) => setFullName(text)}
       />
       <UserInput
         inputName="Email Address"

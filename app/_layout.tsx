@@ -1,12 +1,19 @@
 import { Stack } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import ToastManager from 'toastify-react-native';
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ contentStyle: { backgroundColor: 'green' } }}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-    </Stack>
+    <>
+      <ToastManager />
+      <Stack
+        screenOptions={{
+          contentStyle: { backgroundColor: 'transparent' },
+        }}
+      >
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+      </Stack>
+    </>
   );
 }

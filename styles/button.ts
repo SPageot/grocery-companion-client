@@ -11,6 +11,12 @@ export const buttonStyles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: '#0A1A2F',
+  },
+});
+
+const styles = StyleSheet.create({
+  background: {
+    flex: 1,
   },
 });
