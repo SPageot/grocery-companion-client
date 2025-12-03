@@ -8,7 +8,14 @@ export default function ProtectedLayout() {
   }
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="create"
+        options={{ headerShown: false, animation: 'none' }}
+      />
+      <Stack.Screen
+        name="modify"
+        options={{ headerShown: false, animation: 'none' }}
+      />
     </Stack>
   );
 }

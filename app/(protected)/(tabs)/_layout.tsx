@@ -19,12 +19,19 @@ export default function ProtectedLayout() {
         name="list"
         options={{
           headerShown: false,
-          title: 'Create List',
+          title: 'List',
           tabBarIcon: ({ color, size }) => {
             return (
               <FontAwesome5 name="clipboard-list" size={size} color={color} />
             );
           },
+        }}
+      />
+      <Tabs.Screen
+        name="(list)"
+        options={{
+          href: null,
+          headerShown: false,
         }}
       />
     </Tabs>
