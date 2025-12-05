@@ -9,6 +9,8 @@ import axios from "axios";
 import { BASE_API } from "@/util/baseApi";
 import { useStore } from "@/store/store";
 import { Toast } from "toastify-react-native";
+import List from "@/components/List";
+import ListTitleModal from "@/components/ListTitleModal";
 
 export default function CreateList() {
   const [listItem, setListItem] = useState("");
@@ -57,6 +59,11 @@ export default function CreateList() {
     }
   };
 
+  const onRemoveListItemPress = (item: string) =>
+    setList((prev) =>
+      prev.filter((removeItem) => removeItem != item)
+    )
+
   return (
     <>
       <LinearGradient
@@ -64,101 +71,11 @@ export default function CreateList() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.background}
-      >
-        <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 10,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <UserInput
-              placeholder="Add items here"
-              onChangeText={handleChange}
-              value={listItem}
-            />
-            {listItem && <Button title="Add" onPress={addToList} />}
-          </View>
-          {list.length > 0 ? (
-            <FlatList
-              style={{ marginBottom: 30 }}
-              data={list}
-              renderItem={({ item }) => (
-                <ItemContainer
-                  listItem={item}
-                  onRemovePress={() =>
-                    setList((prev) =>
-                      prev.filter((removeItem) => removeItem != item)
-                    )
-                  }
-                />
-              )}
-              keyExtractor={(item) => item}
-            />
-          ) : (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                style={{ fontSize: 30, fontWeight: 200, fontStyle: "italic" }}
-              >
-                No Items In List
-              </Text>
-            </View>
-          )}
-          {list.length > 0 && (
-            <View
-              style={{
-                width: "100%",
-                padding: 10,
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                backgroundColor: "orange",
-              }}
-            >
-              <Button color="white" onPress={onModal} title="Submit List" />
-            </View>
-          )}
+      ><SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
+        <List handleListItemChange={handleChange} listItem={listItem} list={list} onAddToList={addToList} onRemoveListItemPress={onRemoveListItemPress} onModal={onModal} />
         </SafeAreaView>
       </LinearGradient>
-      <Modal
-        visible={visible}
-        animationType="fade"
-        onRequestClose={() => setIsVisible(!visible)}
-        transparent={true}
-      >
-        <View
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "absolute",
-            justifyContent: "center",
-            alignItems: "center",
-            borderWidth: 1,
-            backgroundColor: "rgba(0,0,0,0.9)",
-          }}
-        >
-          <UserInput
-            borderColor="white"
-            labelColor="white"
-            inputFontColor="white"
-            inputName="Add Title To List"
-            onChangeText={(text) => setListTitle(text)}
-            value={listTitle}
-          />
-          <View style={{ flexDirection: "row" }}>
-            <Button title="Cancel" onPress={() => setIsVisible(!visible)} />
-            <Button title="Submit List" onPress={onSubmitList} />
-          </View>
-        </View>
-      </Modal>
+      <ListTitleModal visible={visible} listTitle={listTitle} onRequestClose={() => setIsVisible(!visible)} onChangeTitleText={(text) => setListTitle(text)} onCancelPress={() => setIsVisible(!visible)} onSubmitList={onSubmitList} />
     </>
   );
 }

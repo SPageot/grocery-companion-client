@@ -4,12 +4,16 @@ import React from 'react';
 export default function ItemContainer({
   listItem,
   onRemovePress,
+  onModifyPress
+
 }: {
   listItem: string;
-  onRemovePress: () => void;
+  onRemovePress?: () => void;
+  onModifyPress?:() => void;
 }) {
   return (
-    <View
+    <Pressable
+      onPress={onModifyPress}
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -23,9 +27,9 @@ export default function ItemContainer({
       }}
     >
       <Text style={{ fontSize: 20, fontWeight: '700' }}>{listItem}</Text>
-      <Pressable onPress={onRemovePress}>
+      {onRemovePress &&<Pressable onPress={onRemovePress}>
         <Text>X</Text>
-      </Pressable>
-    </View>
+      </Pressable>}
+    </Pressable>
   );
 }
