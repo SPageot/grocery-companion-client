@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { styles } from '@/styles/background';
@@ -21,7 +21,6 @@ export default function ModifyList() {
   const [visible, setIsVisible] = useState(false);
   const user = useStore((state: any) => state.user);
 
-
   useEffect(() => {
     const fetchList = async () => {
       const res = await axios.get(`${BASE_API}/lists/${user._id}`);
@@ -33,6 +32,7 @@ export default function ModifyList() {
     fetchList();
   }, []);
 
+  
   const getItem = async(listId:string) => {
     const res = await axios.get(`${BASE_API}/lists/userList/${listId}`)
     setListItem(res.data)
@@ -55,7 +55,6 @@ export default function ModifyList() {
         return;
       }
       setUserList((prev) => [...prev, userListItem]);
-      setListItem("");
     }
   };
 
@@ -65,12 +64,13 @@ export default function ModifyList() {
     )
 
     const onUpdateList = async () => {
+      if("_id" in listItem){
       try {
-        const res = await axios.post(`${BASE_API}/lists/create`, {
+        const res = await axios.put(`${BASE_API}/lists/${listItem._id}`, {
           list: {
             userId: user._id,
             title: listTitle,
-            listItems: list,
+            listItems: userList,
           },
         });
   
@@ -78,11 +78,17 @@ export default function ModifyList() {
           setList([]);
           setIsVisible(false);
           setListTitle("");
-          Toast.success("List Successfully Saved");
+          Toast.success("List Successfully Updated");
+        }else{
+          throw new Error("Error getting data from server, Please try again!")
         }
       } catch (err) {
-        console.log(err);
+        if(err instanceof Error){
+        Toast.error(err.message)
+        }
+        console.error(err)
       }
+    }
     };
 
   return (

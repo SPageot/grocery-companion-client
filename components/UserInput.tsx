@@ -41,6 +41,7 @@ const UserInput: React.FC<UserInputProp> = ({
           borderColor: borderColor || "#0A1A2F",
           width: 300,
           height: 40,
+          padding: 10,
           color: inputFontColor || "black",
         }}
       />
