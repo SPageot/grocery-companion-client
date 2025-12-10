@@ -4,7 +4,6 @@ import { styles } from '@/styles/background';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function List() {
   return (

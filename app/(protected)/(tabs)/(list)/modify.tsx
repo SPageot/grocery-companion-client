@@ -59,10 +59,11 @@ export default function ModifyList() {
   };
 
   const onRemoveListItemPress = (item: string) =>
-    setList((prev) =>
-      prev.filter((removeItem) => removeItem.title != item)
+    setUserList((prev) =>
+      prev.filter((removeItem) => removeItem != item)
     )
-
+  
+  
     const onUpdateList = async () => {
       if("_id" in listItem){
       try {
