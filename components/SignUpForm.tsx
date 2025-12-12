@@ -3,7 +3,7 @@ import FormContainer from './FormContainer';
 import { router } from 'expo-router';
 import UserInput from './UserInput';
 import { Toast } from 'toastify-react-native';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { BASE_API } from '@/util/baseApi';
 
 const SignUpForm = () => {
@@ -15,6 +15,21 @@ const SignUpForm = () => {
 
   const handleRegisterUser = async () => {
     try {
+      if(!username){
+        throw new Error("Missing username! Field is required")
+      }
+      if(!password){
+        throw new Error("Missing password! Field is required")
+      }
+      if(!email){
+        throw new Error("Missing email! Field is required")
+      }
+      if(!phoneNumber){
+        throw new Error("Missing phone number! Field is required")
+      }
+      if(!fullName){
+        throw new Error("Missing fullName! Field is required")
+      }
       const res = await axios.post(`${BASE_API}/users/register`, {
         username,
         password,
@@ -27,7 +42,13 @@ const SignUpForm = () => {
         router.push('/login');
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      if(err instanceof AxiosError){
+        Toast.error(err.response?.data)
+      }
+      if(err instanceof Error){
+        Toast.error(err.message)
+      }
     }
   };
 
