@@ -5,6 +5,7 @@ import FormContainer from './FormContainer';
 import axios from 'axios';
 import { BASE_API } from '@/util/baseApi';
 import { useStore } from '@/store/store';
+import { Toast } from 'toastify-react-native';
 
 const LoginForm = () => {
   const [username, setUsername] = useState<string>('');
@@ -14,6 +15,12 @@ const LoginForm = () => {
 
   const handleFetchUser = async () => {
     try {
+      if(!username){
+        throw new Error("Username is required")
+      }
+      if(!password){
+        throw new Error("Password is required")
+      }
       const res = await axios.post(`${BASE_API}/users/login`, {
         username,
         password,
@@ -25,7 +32,9 @@ const LoginForm = () => {
         router.replace('/');
       }
     } catch (err) {
-      console.log(err);
+      if(err instanceof Error){
+      Toast.error(err.message);
+      }
     }
   };
 
