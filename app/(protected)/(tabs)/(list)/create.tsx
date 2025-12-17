@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/background";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,14 +11,19 @@ import ListTitleModal from "@/components/ListTitleModal";
 
 export default function CreateList() {
   const [listItem, setListItem] = useState("");
-  const [list, setList] = useState<string[]>([]);
   const [visible, setIsVisible] = useState(false);
   const [listTitle, setListTitle] = useState("");
   const user = useStore((state: any) => state.user);
+  const list = useStore((state: any) => state.list);
+  const setList = useStore((state: any) => state.setList);
 
   const handleChange = (text: string) => {
     setListItem(text);
   };
+
+  useEffect(() => {
+    console.log(list)
+  },[])
 
   const addToList = () => {
     if (listItem) {
@@ -26,7 +31,7 @@ export default function CreateList() {
         Toast.error("Item already in List", "bottom");
         return;
       }
-      setList((prev) => [...prev, listItem]);
+      setList(([...list, listItem]));
       setListItem("");
     }
   };
@@ -62,8 +67,8 @@ export default function CreateList() {
   };
 
   const onRemoveListItemPress = (item: string) =>
-    setList((prev) =>
-      prev.filter((removeItem) => removeItem != item)
+    setList(
+      list.filter((removeItem: any) => removeItem != item)
     )
 
   return (
