@@ -82,7 +82,7 @@ if(isAllAdded){
             <UserInput placeholder='What recipe are you looking for' value={chatInput} onChangeText={(text) => setChatInput(text)}/>
             <Button title='Get' onPress={handleGetReceipePress}/>
         </View>
-     <FlatList
+     {recipeList.length > 0 ? <FlatList
         style={{ marginBottom: 30 }}
         data={recipeList}
         renderItem={({ item }) => (
@@ -95,7 +95,7 @@ if(isAllAdded){
           />
         )}
         keyExtractor={(item) => item}
-      />
+      />:<View style={{flex:1, justifyContent:"center", alignItems:"center"}}><Text style={{fontSize:20, fontWeight:200,fontStyle:"italic"}}>Search For Recipes Above</Text></View>}
     
       {recipeList.length > 0 && <View
         style={{

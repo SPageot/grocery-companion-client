@@ -2,6 +2,7 @@ import { styles } from '@/styles/background';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Stack } from 'expo-router';
 import ToastManager from 'toastify-react-native';
+import { PaperProvider } from 'react-native-paper';
 
 export default function RootLayout() {
   return (
@@ -12,6 +13,7 @@ export default function RootLayout() {
       style={styles.background}
     >
       <ToastManager />
+      <PaperProvider>
       <Stack
         screenOptions={{
           contentStyle: { backgroundColor: 'transparent' },
@@ -30,6 +32,7 @@ export default function RootLayout() {
           options={{ headerShown: false, animation: 'fade' }}
         />
       </Stack>
+      </PaperProvider>
     </LinearGradient>
   );
 }
