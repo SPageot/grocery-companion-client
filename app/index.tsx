@@ -1,8 +1,7 @@
 import GradientBackground from "@/component/GradientBackground";
 import GroceryList from "@/component/GroceryList";
-import List from "@/component/GroceryList";
 import { mockList } from "@/mock/mocklist";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,6 +12,7 @@ export default function Index() {
   const [groceryList, setGroceryList] = useState(mockList)
   const [openModal, setOpenModal] = useState(false)
   const [userInput, setUserInput] = useState("")
+  const [titleText, setTitleText] = useState("");
 
   const handleSubtractQuantity = (name: string) => {
     setGroceryList(prev => prev.map(item => item.name == name ? { ...item, quantity: Math.max(0, item.quantity - 1) } : item).filter(item => item.quantity > 0))
@@ -32,6 +32,14 @@ export default function Index() {
 
   const handleOpenClick = () => {
     setOpenModal(true)
+  }
+
+  const onChangeTitleText = (text: string) => {
+    setTitleText(text)
+  }
+
+  const handleSubmitClick = () => {
+
   }
   return (
     <>
@@ -71,7 +79,7 @@ export default function Index() {
           }
         </SafeAreaView>
       </GradientBackground>
-      <GroceryTitleModal visible={openModal} handleCloseClick={handleCloseClick} />
+      <GroceryTitleModal visible={openModal} handleCloseClick={handleCloseClick} titleText={titleText} onChangeTitleText={onChangeTitleText} handleSubmitClick={handleSubmitClick} />
     </>
 
   );
