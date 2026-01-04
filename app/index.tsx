@@ -28,7 +28,7 @@ export default function Index() {
   }
 
   const handleAddClick = () => {
-    setGroceryList(prev => [...prev, { name: userInput, quantity: 1 }])
+    setGroceryList(prev => [...prev, { name: userInput, quantity: 1, isCompleted: false }])
     setUserInput("")
   }
 
@@ -67,7 +67,16 @@ export default function Index() {
   const handleModifyClick = async (item: GroceryListProps) => {
     const res = await axios.get(`${BASE_URL}/lists/userList/${item._id}`)
     setGroceryList(res.data.listItems)
+    setTitleText(res.data.title)
     setOpenList(false)
+  }
+
+  const handleSelectedItem = (item: GroceryItemProps) => {
+    setGroceryList(prev => prev.map(prevItem => prevItem.name == item.name ? { ...prevItem, isCompleted: !prevItem.isCompleted } : prevItem))
+  }
+
+  const handleDeleteItem = (item: GroceryItemProps) => {
+    setGroceryList(prev => prev.filter(prevItem => prevItem.name != item.name))
   }
 
   return (
@@ -90,7 +99,10 @@ export default function Index() {
           {groceryList.length > 0 ?
             <GroceryList groceryList={groceryList}
               handleSubtractQuantity={handleSubtractQuantity}
-              handleAddQuantity={handleAddQuantity} /> :
+              handleAddQuantity={handleAddQuantity}
+              handleSelectedItem={handleSelectedItem}
+              handleDeleteItem={handleDeleteItem}
+            /> :
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
               <Text style={{ fontSize: 30, fontWeight: 200, fontStyle: "italic" }}>List Empty
               </Text>

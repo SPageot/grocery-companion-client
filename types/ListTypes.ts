@@ -2,6 +2,7 @@
 export interface GroceryItemProps {
     name: string;
     quantity: number;
+    isCompleted: boolean
 }
 
 export interface GroceryListProps {
