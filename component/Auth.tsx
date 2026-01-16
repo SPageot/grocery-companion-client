@@ -2,12 +2,12 @@ import { View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Button, TextInput, Text } from 'react-native-paper'
 import { UserDetailsType } from '@/types/userTypes';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { BASE_URL, userDetails } from '@/util/misc';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '@/features/userSlice';
 import { useRouter } from 'expo-router';
-import { RootState } from '@/store/store';
+import Toast from 'react-native-toast-message';
 
 export default function Auth() {
     const [isRegistering, setIsRegistering] = useState(false);
@@ -16,31 +16,75 @@ export default function Auth() {
     const dispatch = useDispatch()
 
     const handleLoginPress = async () => {
-        if (isRegistering) {
-            setIsRegistering(false)
-            setUser(userDetails)
-            return;
-        }
+        try {
+            if (isRegistering) {
+                setIsRegistering(false)
+                setUser(userDetails)
+                return;
+            }
+            if (!user.password || !user.username) {
+                Toast.show({
+                    type: "error",
+                    text1: "Login Error",
+                    text1Style: { fontSize: 10 },
+                    text2: "Username/Password is required",
+                    text2Style: { fontSize: 20, color: "red", fontWeight: 500 }
+                })
+                return;
+            }
 
-        const res = await axios.post(`${BASE_URL}/user/login`, { username: user.username, password: user.password })
-        const data = res.data
-        if (data) {
-            dispatch(addUser(data))
-            router.push("/")
+            const res = await axios.post(`${BASE_URL}/user/login`, { username: user.username, password: user.password })
+            const data = res.data
+            if (data) {
+                dispatch(addUser(data))
+                router.push("/")
+            }
+        } catch (err) {
+            if (err instanceof AxiosError) {
+                Toast.show({
+                    type: 'error',
+                    text1: "Login Error",
+                    text1Style: { fontSize: 10 },
+                    text2: err.response?.data.detail,
+                    text2Style: { fontSize: 20, color: "red", fontWeight: 500 }
+                })
+            }
         }
     }
 
     const handleRegisterPress = async () => {
-        if (!isRegistering) {
-            setIsRegistering(true)
-            setUser(userDetails)
-            return;
-        }
-        const res = await axios.post(`${BASE_URL}/user/create`, user)
-        const data = res.data
-        if (data) {
-            setIsRegistering(false)
-            setUser(userDetails)
+        try {
+            if (!isRegistering) {
+                setIsRegistering(true)
+                setUser(userDetails)
+                return;
+            }
+            if (Object.values(user).some(detail => detail === "")) {
+                Toast.show({
+                    type: 'error',
+                    text1: "Register Error",
+                    text1Style: { fontSize: 10 },
+                    text2: "All Fields Are Required",
+                    text2Style: { fontSize: 20, color: "red", fontWeight: 500 }
+                })
+                return;
+            }
+            const res = await axios.post(`${BASE_URL}/user/create`, user)
+            const data = res.data
+            if (data) {
+                setIsRegistering(false)
+                setUser(userDetails)
+            }
+        } catch (err) {
+            if (err instanceof AxiosError) {
+                Toast.show({
+                    type: 'error',
+                    text1: "Register Error",
+                    text1Style: { fontSize: 10 },
+                    text2: err.response?.data.detail,
+                    text2Style: { fontSize: 20, color: "red", fontWeight: 500 }
+                })
+            }
         }
     }
 
