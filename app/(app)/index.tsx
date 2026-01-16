@@ -2,7 +2,7 @@ import _ from "lodash";
 import GradientBackground from "@/component/GradientBackground";
 import GroceryList from "@/component/GroceryList";
 import { mockList } from "@/mock/mocklist";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +13,6 @@ import ViewGroceryListModal from "@/component/ViewGroceryListModal";
 import { GroceryItemProps, GroceryListProps } from "@/types/ListTypes";
 import { BASE_URL } from "@/util/misc";
 import { useSelector } from "react-redux";
-import { useRouter } from "expo-router";
 import { RootState } from "@/store/store";
 
 export default function Index() {
@@ -103,6 +102,7 @@ export default function Index() {
     setGroceryList(res.data.list_items)
     setTitleText(res.data.title)
     setOpenList(false)
+    setIsModifying(true)
   }
 
   const handleSelectedItem = (item: GroceryItemProps) => {
