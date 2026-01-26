@@ -12,11 +12,11 @@ import axios from 'axios'
 import ViewGroceryListModal from "@/component/ViewGroceryListModal";
 import { GroceryItemProps, GroceryListProps } from "@/types/ListTypes";
 import { BASE_URL } from "@/util/misc";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { addList } from "@/features/listSlice";
 
 export default function Index() {
-  const user = useSelector((state: RootState) => state.users)
   const [groceryList, setGroceryList] = useState(mockList)
   const [openModal, setOpenModal] = useState(false)
   const [userInput, setUserInput] = useState("")
@@ -24,6 +24,8 @@ export default function Index() {
   const [openList, setOpenList] = useState(false);
   const [isModifying, setIsModifying] = useState(false)
   const [userGroceryList, setUserGroceryList] = useState<GroceryListProps>()
+  const user = useSelector((state: RootState) => state.users)
+  const dispatch = useDispatch()
 
 
 
@@ -64,6 +66,7 @@ export default function Index() {
       setUserGroceryList(undefined)
       setTitleText("")
       setOpenModal(false)
+      dispatch(addList({ user_id: user._id, title: titleText, list_items: groceryList }))
     }
   }
 
@@ -81,6 +84,7 @@ export default function Index() {
         setTitleText("")
         setUserGroceryList(undefined)
         setOpenModal(false)
+
       }
     } catch (err) {
       console.log(err)
@@ -111,6 +115,11 @@ export default function Index() {
 
   const handleDeleteItem = (item: GroceryItemProps) => {
     setGroceryList(prev => prev.filter(prevItem => prevItem.name != item.name))
+  }
+
+  const handleClearList = () => {
+    setGroceryList([])
+    setTitleText("")
   }
 
   return (
@@ -150,7 +159,7 @@ export default function Index() {
             <Button mode="outlined" onPress={handleViewGroceryModal}>
               <Text>View List</Text>
             </Button>
-            {groceryList.length > 0 && <Button mode="outlined" onPress={() => setGroceryList([])}>
+            {groceryList.length > 0 && <Button mode="outlined" onPress={handleClearList}>
               <Text>Clear List</Text>
             </Button>}
           </View>

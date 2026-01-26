@@ -15,9 +15,9 @@ export default function GroceryList({ groceryList, handleSubtractQuantity, handl
     <FlatList
       data={groceryList}
       renderItem={({ item }) =>
-        <Button mode="outlined" style={{ width: "95%", backgroundColor: item.isCompleted ? "grey" : "unset" }} onLongPress={() => handleSelectedItem(item)}>
+        <Button mode="outlined" style={{ width: "95%", backgroundColor: item.is_completed ? "grey" : "unset" }} onLongPress={() => handleSelectedItem(item)}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: 5, gap: 5, }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', textDecorationLine: item.isCompleted ? "line-through" : "none" }}>{item.name}</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', textDecorationLine: item.is_completed ? "line-through" : "none" }}>{item.name}</Text>
             <View style={{ flexDirection: 'row', gap: 20, alignItems: 'center' }}>
               <AntDesign name="minus-circle" size={24} color="black" onPress={() => handleSubtractQuantity(item.name)} />
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.quantity}</Text>

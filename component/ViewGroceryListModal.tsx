@@ -11,9 +11,12 @@ import Reanimated, {
     useAnimatedStyle,
 } from 'react-native-reanimated';
 import Feather from '@expo/vector-icons/Feather';
+import { useSelector } from 'react-redux'
+import { RootState } from '@/store/store'
 
 const ViewGroceryListModal = ({ visible, handleCloseClick, handleModifyClick, userId }: { visible: boolean, handleCloseClick: () => void, handleModifyClick: (item: GroceryListProps) => Promise<void>, userId: string }) => {
     const [groceryList, setGroceryList] = useState<any[]>([])
+    const list = useSelector((state: RootState) => state.list)
 
 
     useEffect(() => {
@@ -22,7 +25,7 @@ const ViewGroceryListModal = ({ visible, handleCloseClick, handleModifyClick, us
             setGroceryList(res.data)
         }
         fetchUserGroceryList()
-    }, [])
+    }, [list])
 
     const handleDeletePress = async (item: GroceryListProps) => {
         const prevGroceryList = groceryList

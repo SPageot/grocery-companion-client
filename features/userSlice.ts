@@ -8,7 +8,7 @@ export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    addUser: (state, action:PayloadAction<UserDBType>) => {
+    addUser: (_, action:PayloadAction<UserDBType>) => {
       return action.payload 
     },
   }

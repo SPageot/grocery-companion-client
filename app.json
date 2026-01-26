@@ -4,7 +4,7 @@
     "slug": "dont-forget",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/df-icon.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "dontforget",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
