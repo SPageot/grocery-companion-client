@@ -15,6 +15,7 @@ import { BASE_URL } from "@/util/misc";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { addList } from "@/features/listSlice";
+import Toast from "react-native-toast-message";
 
 export default function Index() {
   const [groceryList, setGroceryList] = useState(mockList)
@@ -37,8 +38,20 @@ export default function Index() {
   }
 
   const handleAddClick = () => {
-    setGroceryList(prev => [...prev, { name: userInput, quantity: 1, is_completed: false }])
-    setUserInput("")
+    const checkForDup = groceryList.filter(listDetails => listDetails.name.toLowerCase() == userInput.toLowerCase());
+    if (checkForDup.length === 0) {
+      setGroceryList(prev => [...prev, { name: userInput, quantity: 1, is_completed: false }])
+      setUserInput("")
+    }
+    else {
+      Toast.show({
+        type: 'error',
+        text1: "List Duplication Error",
+        text1Style: { fontSize: 10 },
+        text2: "Item already on list",
+        text2Style: { fontSize: 20, color: "red", fontWeight: 500 }
+      })
+    }
   }
 
   const handleCloseClick = () => {
@@ -84,7 +97,6 @@ export default function Index() {
         setTitleText("")
         setUserGroceryList(undefined)
         setOpenModal(false)
-
       }
     } catch (err) {
       console.log(err)
@@ -135,6 +147,7 @@ export default function Index() {
             <TextInput
               value={userInput}
               onChangeText={text => setUserInput(text)}
+              onSubmitEditing={handleAddClick}
               style={{ flex: 1, padding: 5 }}
             />
             <Button onPress={handleAddClick}><Feather name="plus" size={24} color="black" /></Button>
@@ -153,9 +166,10 @@ export default function Index() {
           }
 
           <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", padding: 20, gap: 10 }}>
-            {groceryList.length > 0 && <Button mode="outlined" onPress={handleOpenClick}>
-              <Text>Submit List</Text>
-            </Button>}
+            {groceryList.length > 0 &&
+              <Button mode="outlined" onPress={handleOpenClick}>
+                <Text>Submit List</Text>
+              </Button>}
             <Button mode="outlined" onPress={handleViewGroceryModal}>
               <Text>View List</Text>
             </Button>

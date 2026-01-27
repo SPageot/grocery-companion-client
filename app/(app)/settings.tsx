@@ -73,7 +73,7 @@ export default function Settings() {
                     <View style={{ padding: 10 }}>
                         <Text>Password</Text>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <TextInput disabled={disable} onChangeText={(text) => setUserDetails(prev => ({ ...prev, password: text }))} value={userDetails.password} mode='outlined' style={{ width: "100%" }} />
+                            <TextInput disabled={disable} secureTextEntry={true} onChangeText={(text) => setUserDetails(prev => ({ ...prev, password: text }))} value={userDetails.password} mode='outlined' style={{ width: "100%" }} />
 
                         </View>
                     </View>
