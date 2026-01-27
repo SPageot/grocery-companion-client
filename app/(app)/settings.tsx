@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { TextInput } from 'react-native-paper'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import GradientBackground from '@/component/GradientBackground';
@@ -10,33 +10,49 @@ import Feather from '@expo/vector-icons/Feather';
 import { BASE_URL } from '@/util/misc';
 import axios from 'axios';
 import { useRouter } from 'expo-router';
+import Toast from 'react-native-toast-message';
 
 
 export default function Settings() {
     const user = useSelector((state: RootState) => state.users)
     const router = useRouter()
     const [disable, setDisable] = useState(true)
-    const [userDetails, setUserDetails] = useState({
-        name: user.name,
-        email: user.email,
-        phone_number: user.phone_number,
-        username: user.username,
-        password: user.password
-    })
+    const [prevUserDetails, _] = useState(user)
+    const [userDetails, setUserDetails] = useState(user)
 
     const handleSavePress = async () => {
         await axios.put(`${BASE_URL}/user?id=${user._id}`, userDetails);
-        console.log("User Details Successfully Updated!!")
+        Toast.show({
+            type: 'success',
+            text1: "User Success",
+            text1Style: { fontSize: 10 },
+            text2: "Successfully Updated!",
+            text2Style: { fontSize: 20, color: "green", fontWeight: 300 }
+        })
     }
 
     const handleDeletePress = async () => {
         const res = await axios.delete(`${BASE_URL}/user?id=${user._id}`);
-        console.log("User Deleted Successfully")
+        Toast.show({
+            type: 'success',
+            text1: "User Success",
+            text1Style: { fontSize: 10 },
+            text2: "Successfully Deleted!",
+            text2Style: { fontSize: 20, color: "green", fontWeight: 300 }
+        })
         if (res.data) {
             router.push("/login")
         }
-
     }
+
+    const checkIfDetailsAreSame = useMemo(() => {
+        if (userDetails == prevUserDetails) {
+            return true
+        }
+        return false
+    }, [userDetails, prevUserDetails])
+
+
     return (
         <GradientBackground>
             <SafeAreaView style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
@@ -80,15 +96,21 @@ export default function Settings() {
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-evenly", width: "100%" }}>
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
-                        <Text>{!disable && "Cancel"} Edit User Details</Text>
-                        <AntDesign name="edit" size={24} color="black" onPress={() => setDisable(!disable)} />
+                        <Text>{!disable && "Cancel"} Edit User</Text>
+                        <AntDesign name="edit" size={24} color="black" onPress={() => {
+                            if (!disable) {
+                                setUserDetails(prevUserDetails)
+                            }
+                            setDisable(!disable)
+                        }
+                        } />
                     </View>
-                    <View style={{ justifyContent: "center", alignItems: "center" }}>
-                        <Text>Save User Details</Text>
+                    {!checkIfDetailsAreSame && <View style={{ justifyContent: "center", alignItems: "center" }}>
+                        <Text>Save</Text>
                         <Feather onPress={handleSavePress} name="save" size={24} color="black" />
-                    </View>
+                    </View>}
                     <View style={{ justifyContent: "center", alignItems: "center" }}>
-                        <Text>Delete User Account</Text>
+                        <Text>Delete Account</Text>
                         <Feather onPress={handleDeletePress} name="save" size={24} color="black" />
                     </View>
                 </View>
